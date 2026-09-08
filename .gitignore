@@ -1,8 +1,8 @@
 # Build artifacts
-/bin/
-/obj/
-/obj_build/
-/out/
+**/bin/
+**/obj/
+**/obj_build/
+**/out/
 
 # Test artifacts
 TestResults/
@@ -17,29 +17,27 @@ TestResults/
 *.sln.docstates
 
 # IDE settings
-/.vs/
-/.vscode/
-/.idea/
+.vs/
+.vscode/
+.idea/
 
 # Logs
 *.log
-*.json
-# logs/
 
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Local configuration / secrets
 appsettings*.json
+.env
+.env.*
 
 # NuGet
 *.nupkg
 *.snupkg
 packages/
 !**/packages/build/
-
-# Local environment
-.env
-.env.*
 
 # Publish output
 publish/
