@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net10.0</TargetFramework>
+	<IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+	<ItemGroup>
+	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
+	<PackageReference Include="xunit" Version="2.6.2" />
+	<!-- Use xUnit runner 2.x to avoid xUnit v3 packages -->
+	<PackageReference Include="xunit.runner.visualstudio" Version="2.8.0" />
+	<!-- Ensure xunit.core v2 is used -->
+	<PackageReference Include="xunit.core" Version="2.6.2" />
+	<PackageReference Include="Moq" Version="4.20.4" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<ProjectReference Include="..\CloudCart.Api.csproj" />
+  </ItemGroup>
+
+</Project>

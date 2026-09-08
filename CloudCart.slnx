@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="CloudCart.Api/CloudCart.Api.csproj" />
+  <Project Path="CloudCart.Tests/CloudCart.Tests.csproj" />
+</Solution>
