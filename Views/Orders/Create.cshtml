@@ -1,0 +1,118 @@
+@model CloudCart.Api.DTOs.CreateOrderDto
+
+@{
+    ViewData["Title"] = "Create Order";
+}
+
+<h1>Create Order</h1>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label asp-for="UserId">User Id</label>
+        <input asp-for="UserId" class="form-control" />
+    </div>
+
+    <h4>Items</h4>
+    <table class="table" id="items-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ var idx = 0; }
+            <tr>
+                <td>
+                    <select name="Items[0].ProductId" class="form-control">
+                        @foreach (var p in (List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.Products)
+                        {
+                            <option value="@p.Value">@p.Text</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <input name="Items[0].Quantity" value="1" class="form-control" />
+                </td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-danger remove-item">Remove</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <button type="button" id="add-item" class="btn btn-secondary">Add Item</button>
+    </div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Create Order</button>
+    </div>
+</form>
+
+<script>
+    (function(){
+        const addBtn = document.getElementById('add-item');
+        const table = document.getElementById('items-table').querySelector('tbody');
+
+        function getProductsHtml(namePrefix) {
+            const products = [];
+            @* Render product options into a JS array *@
+            var opts = [];
+            @foreach (var p in (List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.Products)
+            {
+                <text>opts.push({ value: '@p.Value', text: '@p.Text' });</text>
+            }
+            return opts.map(o => `<option value="${o.value}">${o.text}</option>`).join('');
+        }
+
+        function updateRemoveButtons() {
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.removeEventListener('click', onRemove);
+                btn.addEventListener('click', onRemove);
+            });
+        }
+
+        function onRemove(e) {
+            const row = e.target.closest('tr');
+            if (row) row.remove();
+            // Re-index name attributes
+            reindex();
+        }
+
+        function reindex() {
+            const rows = table.querySelectorAll('tr');
+            rows.forEach((r, i) => {
+                const select = r.querySelector('select');
+                const input = r.querySelector('input');
+                if (select) select.name = `Items[${i}].ProductId`;
+                if (input) input.name = `Items[${i}].Quantity`;
+            });
+        }
+
+        addBtn.addEventListener('click', function(){
+            const idx = table.querySelectorAll('tr').length;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <select name="Items[${idx}].ProductId" class="form-control">
+                        ${getProductsHtml()}
+                    </select>
+                </td>
+                <td>
+                    <input name="Items[${idx}].Quantity" value="1" class="form-control" />
+                </td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-danger remove-item">Remove</button>
+                </td>
+            `;
+            table.appendChild(tr);
+            updateRemoveButtons();
+        });
+
+        updateRemoveButtons();
+    })();
+</script>

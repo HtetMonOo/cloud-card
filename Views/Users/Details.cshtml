@@ -1,0 +1,19 @@
+@model CloudCart.Api.DTOs.UserDto
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<h1>@Model.FullName</h1>
+
+<dl class="row">
+    <dt class="col-sm-2">Id</dt>
+    <dd class="col-sm-10">@Model.Id</dd>
+
+    <dt class="col-sm-2">Email</dt>
+    <dd class="col-sm-10">@Model.Email</dd>
+</dl>
+
+<p>
+    <a class="btn btn-secondary" href="/Users">Back to list</a>
+</p>

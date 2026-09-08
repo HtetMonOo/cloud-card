@@ -17,6 +17,11 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+// Register services
+builder.Services.AddScoped<CloudCart.Api.Services.Interfaces.IProductService, CloudCart.Api.Services.ProductService>();
+builder.Services.AddScoped<CloudCart.Api.Services.Interfaces.IOrderService, CloudCart.Api.Services.OrderService>();
+builder.Services.AddScoped<CloudCart.Api.Services.Interfaces.IUserService, CloudCart.Api.Services.UserService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

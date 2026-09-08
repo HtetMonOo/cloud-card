@@ -69,5 +69,26 @@ namespace CloudCart.Api.Mapping
 
             return order;
         }
+
+        // User
+        public static UserDto ToDto(this User u)
+        {
+            if (u == null) return null!;
+            return new UserDto
+            {
+                Id = u.Id,
+                FullName = u.FullName,
+                Email = u.Email
+            };
+        }
+
+        public static User ToEntity(this DTOs.CreateUserDto dto)
+        {
+            return new User
+            {
+                FullName = dto.FullName,
+                Email = dto.Email
+            };
+        }
     }
 }
