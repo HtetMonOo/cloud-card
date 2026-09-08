@@ -1,0 +1,51 @@
+# Build artifacts
+/bin/
+/obj/
+/obj_build/
+/out/
+
+# Test artifacts
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDE settings
+/.vs/
+/.vscode/
+/.idea/
+
+# Logs
+*.log
+*.json
+# logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+appsettings*.json
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+!**/packages/build/
+
+# Local environment
+.env
+.env.*
+
+# Publish output
+publish/
+
+# Rider
+*.sln.iml
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
