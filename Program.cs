@@ -1,16 +1,26 @@
 using Microsoft.EntityFrameworkCore;
 using CloudCart.Api.Persistence;
 using CloudCart.Api.Persistence.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure EF Core - use InMemory for initial local development.
-// To switch to PostgreSQL later, replace UseInMemoryDatabase with UseNpgsql and set a connection string in configuration.
+// Configure EF Core - prefer PostgreSQL when a connection string is provided; fall back to InMemory for local development.
+var defaultConn = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseInMemoryDatabase("CloudCart"));
+{
+    if (!string.IsNullOrEmpty(defaultConn))
+    {
+        options.UseNpgsql(defaultConn);
+    }
+    else
+    {
+        options.UseInMemoryDatabase("CloudCart");
+    }
+});
 
 // Register repositories (Repository pattern)
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
@@ -44,5 +54,16 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+
+// If running with PostgreSQL configuration, ensure the database is created on startup (useful for integration tests).
+if (!string.IsNullOrEmpty(defaultConn))
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        // Ensure the database is created. For real production scenarios, prefer migrations instead.
+        db.Database.EnsureCreated();
+    }
+}
 
 app.Run();
