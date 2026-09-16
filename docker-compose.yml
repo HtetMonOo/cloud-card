@@ -21,6 +21,15 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
     ports:
       - "5000:80"
-
+  
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.migration
+    depends_on:
+      - db
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=cloudcartdb;Username=cloudcart;Password=cloudcart_pass"
+      
 volumes:
   db_data:
