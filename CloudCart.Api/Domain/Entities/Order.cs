@@ -14,16 +14,6 @@ namespace CloudCart.Api.Domain.Entities
 
         public List<OrderItem> Items { get; set; } = new();
 
-        public decimal Total => Items == null ? 0m : CalculateTotal();
-
-        private decimal CalculateTotal()
-        {
-            decimal sum = 0;
-            foreach (var it in Items)
-            {
-                sum += it.UnitPrice * it.Quantity;
-            }
-            return sum;
-        }
+        public decimal Total => Items?.Sum(x => x.TotalPrice) ?? 0m;
     }
 }

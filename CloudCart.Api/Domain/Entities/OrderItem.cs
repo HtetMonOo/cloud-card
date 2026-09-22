@@ -11,6 +11,13 @@ namespace CloudCart.Api.Domain.Entities
         public Product? Product { get; set; }
 
         public int Quantity { get; set; }
+        // Original product price at the time of purchase
         public decimal UnitPrice { get; set; }
+
+        // Discount applied per unit
+        public decimal DiscountAmount { get; set; }
+
+        // Final price for this line
+        public decimal TotalPrice { get; set; }
     }
 }
