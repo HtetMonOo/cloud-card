@@ -7,5 +7,6 @@ namespace CloudCart.Api.Persistence.Repositories.Interfaces
         Task<List<DiscountEvent>> GetActiveDiscountsAsync();
 
         Task<List<DiscountEvent>> GetActiveDiscountsForProductAsync(int productId);
+        Task<DiscountEvent?> GetByIdWithProductsAsync(int id);
     }
 }

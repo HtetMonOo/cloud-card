@@ -41,5 +41,41 @@ namespace CloudCart.Api.Services
             var discountEvents = await _discountEventRepository.GetActiveDiscountsAsync();
             return discountEvents.Select(de => de.ToDto()).ToList();
         }
+
+        public async Task<DiscountEventDto> UpdateDiscountEventAsync(
+            int id,
+            UpdateDiscountEventDto dto)
+        {
+            var discountEvent = await _discountEventRepository
+                .GetByIdWithProductsAsync(id);
+
+            if (discountEvent == null)
+            {
+                throw new Exception("Discount event not found.");
+            }
+
+            var productIds = dto.ProductIds.Distinct().ToList();
+
+            var products = await _productRepository
+                .GetProductsByIdsAsync(productIds);
+
+            if (products.Count != productIds.Count)
+            {
+                throw new Exception("One or more products do not exist.");
+            }
+
+            discountEvent.Name = dto.Name;
+            discountEvent.StartDate = dto.StartDate;
+            discountEvent.EndDate = dto.EndDate;
+            discountEvent.DiscountType = dto.DiscountType;
+            discountEvent.DiscountValue = dto.DiscountValue;
+
+            discountEvent.Products = products;
+
+            _discountEventRepository.Update(discountEvent);
+            await _discountEventRepository.SaveChangesAsync();
+
+            return discountEvent.ToDto();
+        }
     }
 }

@@ -7,5 +7,6 @@ namespace CloudCart.Api.Services.Interfaces
         Task<DiscountEventDto> CreateDiscountEventAsync(CreateDiscountEventDto dto);
         Task<List<DiscountEventDto>> GetActiveDiscountsForProductAsync(int productId);
         Task<List<DiscountEventDto>> GetActiveDiscountsAsync();
+        Task<DiscountEventDto> UpdateDiscountEventAsync(int id, UpdateDiscountEventDto dto);
     }
 }

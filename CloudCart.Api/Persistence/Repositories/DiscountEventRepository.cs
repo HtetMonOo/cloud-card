@@ -31,5 +31,12 @@ namespace CloudCart.Api.Persistence.Repositories
                         p.Id == productId))
                 .ToListAsync();
         }
+
+        public async Task<DiscountEvent?> GetByIdWithProductsAsync(int id)
+        {
+            return await _db.DiscountEvents
+                .Include(d => d.Products)
+                .FirstOrDefaultAsync(d => d.Id == id);
+        }
     }
 }
