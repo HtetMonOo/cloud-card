@@ -90,5 +90,39 @@ namespace CloudCart.Api.Mapping
                 Email = dto.Email
             };
         }
+
+        // DiscountEvent
+        public static DiscountEventDto ToDto(this DiscountEvent d)
+        {
+            return new DiscountEventDto
+            {
+                Id = d.Id,
+                Name = d.Name,
+                StartDate = d.StartDate,
+                EndDate = d.EndDate,
+                DiscountType = d.DiscountType,
+                DiscountValue = d.DiscountValue,
+                IsActive = d.IsActive,
+                Products = d.Products
+                    .Select(p => p.ToDto())
+                    .ToList()
+            };
+        }
+
+        public static DiscountEvent ToEntity(this DTOs.CreateDiscountEventDto dto)
+        {
+            return new DiscountEvent
+            {
+                Name = dto.Name,
+                StartDate = dto.StartDate,
+                EndDate = dto.EndDate,
+                DiscountType = dto.DiscountType,
+                DiscountValue = dto.DiscountValue
+            };
+        }
+
+            
+
+
     }
 }
