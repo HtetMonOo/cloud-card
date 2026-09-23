@@ -12,7 +12,6 @@
     DateTime.UtcNow >= StartDate &&
     DateTime.UtcNow <= EndDate;
         public List<Product> Products { get; set; } = new();
-        public List<int> ProductIds { get; set; } = new();
 
     }
 

@@ -1,6 +1,6 @@
 using CloudCart.Api.DTOs;
 using CloudCart.Api.Mapping;
-using CloudCart.Api.Persistence.Repositories;
+using CloudCart.Api.Persistence.Repositories.Interfaces;
 using CloudCart.Api.Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;

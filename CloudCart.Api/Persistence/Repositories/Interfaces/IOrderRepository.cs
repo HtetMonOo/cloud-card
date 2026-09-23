@@ -1,8 +1,6 @@
 using CloudCart.Api.Domain.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace CloudCart.Api.Persistence.Repositories
+namespace CloudCart.Api.Persistence.Repositories.Interfaces
 {
     public interface IOrderRepository : IRepository<Order>
     {

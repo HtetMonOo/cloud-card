@@ -13,6 +13,7 @@ namespace CloudCart.Api.Persistence
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<OrderItem> OrderItems { get; set; } = null!;
+        public DbSet<DiscountEvent> DiscountEvents { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +42,32 @@ namespace CloudCart.Api.Persistence
                 .WithOne(o => o.User)
                 .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Product - DiscountEvent many-to-many relationship
+            modelBuilder.Entity<DiscountEvent>()
+                .HasMany(de => de.Products)
+                .WithMany(p => p.DiscountEvents)
+                .UsingEntity<Dictionary<string, object>>(
+                    "ProductDiscountEvent",
+
+                    j => j
+                        .HasOne<Product>()
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade),
+
+                    j => j
+                        .HasOne<DiscountEvent>()
+                        .WithMany()
+                        .HasForeignKey("DiscountEventId")
+                        .OnDelete(DeleteBehavior.Cascade),
+
+                    j =>
+                    {
+                        j.HasKey("ProductId", "DiscountEventId");
+                    });
+
+
         }
     }
 }

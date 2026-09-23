@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using CloudCart.Api.Persistence;
 using CloudCart.Api.Persistence.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using CloudCart.Api.Persistence.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

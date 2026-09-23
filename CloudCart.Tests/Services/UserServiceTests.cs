@@ -1,11 +1,11 @@
 using CloudCart.Api.DTOs;
 using CloudCart.Api.Domain.Entities;
-using CloudCart.Api.Persistence.Repositories;
 using CloudCart.Api.Services;
 using Moq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
+using CloudCart.Api.Persistence.Repositories.Interfaces;
 
 namespace CloudCart.Tests.Services
 {

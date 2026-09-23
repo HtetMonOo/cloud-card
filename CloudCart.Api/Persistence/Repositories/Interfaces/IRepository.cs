@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace CloudCart.Api.Persistence.Repositories
+namespace CloudCart.Api.Persistence.Repositories.Interfaces
 {
     public interface IRepository<T> where T : class
     {

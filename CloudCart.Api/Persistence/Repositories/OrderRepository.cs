@@ -1,8 +1,6 @@
 using CloudCart.Api.Domain.Entities;
+using CloudCart.Api.Persistence.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CloudCart.Api.Persistence.Repositories
 {

@@ -1,7 +1,6 @@
 using CloudCart.Api.Domain.Entities;
-using System.Threading.Tasks;
 
-namespace CloudCart.Api.Persistence.Repositories
+namespace CloudCart.Api.Persistence.Repositories.Interfaces
 {
     public interface IUserRepository : IRepository<User>
     {
