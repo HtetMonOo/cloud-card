@@ -17,5 +17,13 @@ namespace CloudCart.Api.Persistence.Repositories
                 .Include(p => p.OrderItems)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
+
+        public async Task<List<Product>> GetProductsByIdsAsync(List<int> ids)
+        {
+            return await _db.Products
+                .AsNoTracking()
+                .Where(p => ids.Contains(p.Id))
+                .ToListAsync();     
+        }
     }
 }
