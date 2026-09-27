@@ -77,5 +77,11 @@ namespace CloudCart.Api.Services
 
             return discountEvent.ToDto();
         }
+
+        public async Task<DiscountEventDto?> GetByIdAsync(int id)
+        {
+            var de = await _discountEventRepository.GetByIdWithProductsAsync(id);
+            return de?.ToDto();
+        }
     }
 }
