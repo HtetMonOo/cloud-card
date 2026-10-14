@@ -10,10 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Configure EF Core - prefer PostgreSQL when a connection string is provided; fall back to InMemory for local development.
-var defaultConn = builder.Configuration.GetConnectionString("DefaultConnection");
+var defaultConn = builder.Configuration
+    .GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    if (!string.IsNullOrEmpty(defaultConn))
+    if (builder.Environment.IsEnvironment("Testing"))
+    {
+        options.UseInMemoryDatabase("CloudCart.IntegrationTests");
+    }
+    else if (!string.IsNullOrEmpty(defaultConn))
     {
         options.UseNpgsql(defaultConn);
     }
@@ -57,14 +63,14 @@ app.MapControllerRoute(
 
 
 // If running with PostgreSQL configuration, ensure the database is created on startup (useful for integration tests).
-if (!string.IsNullOrEmpty(defaultConn))
+if (!builder.Environment.IsEnvironment("Testing")
+    && !string.IsNullOrEmpty(defaultConn))
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        // Ensure the database is created. For real production scenarios, prefer migrations instead.
-        db.Database.EnsureCreated();
-    }
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated();
 }
 
 app.Run();
+
+public partial class Program { }
