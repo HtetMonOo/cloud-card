@@ -17,7 +17,23 @@ namespace CloudCart.Api.Services
 
         public async Task<DiscountEventDto> CreateDiscountEventAsync(CreateDiscountEventDto dto)
         {
-            var products = await _productRepository.GetProductsByIdsAsync(dto.ProductIds);
+
+            var requestedProductIds = dto.ProductIds.Distinct().ToList();
+
+            var products = await _productRepository.GetProductsByIdsAsync(requestedProductIds);
+
+            var foundProductIds = products
+                .Select(p => p.Id)
+                .ToHashSet();
+
+            var missingIds = requestedProductIds
+                .Where(id => !foundProductIds.Contains(id))
+                .ToList();
+
+            if (missingIds.Any())
+            {
+                throw new Exception("One or more products do not exist.");
+            }
 
             var discountEvent = dto.ToEntity();
 

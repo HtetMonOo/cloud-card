@@ -7,6 +7,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -14,6 +15,39 @@ namespace CloudCart.Tests.Services
 {
     public class DiscountEventServiceTests
     {
+        [Fact]
+        public async Task CreateDiscountEventAsync_ProductNotFound_Throws()
+        {
+            var discountRepo = new Mock<IDiscountEventRepository>();
+            var productRepo = new Mock<IProductRepository>();
+
+            var products = new List<Product>
+            {
+                new Product { Id = 1, Name = "P1", Price = 5m },
+                new Product { Id = 2, Name = "P2", Price = 10m }
+            };
+
+            productRepo
+                .Setup(p => p.GetProductsByIdsAsync(It.IsAny<List<int>>()))
+                .ReturnsAsync((List<int> ids) =>
+                    products.Where(p => ids.Contains(p.Id)).ToList());
+
+            var svc = new DiscountEventService(discountRepo.Object, productRepo.Object);
+            var dto = new CreateDiscountEventDto
+            {
+                Name = "Sale",
+                StartDate = DateTime.UtcNow.AddDays(-1),
+                EndDate = DateTime.UtcNow.AddDays(1),
+                DiscountType = DiscountType.Percentage,
+                DiscountValue = 10m,
+                ProductIds = new List<int> { 1, 2, 3 }
+            };
+
+            await Assert.ThrowsAsync<Exception>(() => svc.CreateDiscountEventAsync(dto));
+
+        }
+
+
         [Fact]
         public async Task CreateDiscountEventAsync_ValidDto_ReturnsCreatedDto()
         {
